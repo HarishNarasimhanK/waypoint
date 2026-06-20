@@ -8,14 +8,60 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String
+  hashedPassword String?
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  resumes   Resume[]
-  analyses  ResumeAnalysis[]
+  accounts Account[]
+  resumes  Resume[]
+  analyses ResumeAnalysis[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String
+  type              String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([email, token])
+  @@index([email])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([email, token])
+  @@index([email])
 }
 
 model Job {
@@ -23,17 +69,17 @@ model Job {
   title           String
   company         String
   location        String
-  jobType         String      // full-time, intern, contract
+  jobType         String
   description     String
   qualifications  String?
   salary          String?
-  sourcePlatform  String      // linkedin, greenhouse, lever
+  sourcePlatform  String
   sourceUrl       String      @unique
   postedAt        DateTime?
   scrapedAt       DateTime    @default(now())
   status          JobStatus   @default(NEW)
   relevanceScore  Float?
-  embedding       Float[]     // pgvector stored as float array
+  embedding       Float[]
 
   analyses ResumeAnalysis[]
 
@@ -46,8 +92,8 @@ model Resume {
   id        String   @id @default(cuid())
   userId    String
   fileName  String
-  content   String   // extracted text
-  embedding Float[]  // resume embedding for matching
+  content   String
+  embedding Float[]
   createdAt DateTime @default(now())
 
   user     User             @relation(fields: [userId], references: [id])
@@ -60,9 +106,9 @@ model ResumeAnalysis {
   jobId           String
   resumeId        String
   matchScore      Float
-  missingKeywords String[] // keywords in JD but not in resume
-  suggestions     Json     // { reword: [...], add: [...], strengths: [...] }
-  aiProvider      String   // ollama, claude, openai
+  missingKeywords String[]
+  suggestions     Json
+  aiProvider      String
   createdAt       DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id])
