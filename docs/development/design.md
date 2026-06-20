@@ -1,10 +1,14 @@
 # Increment 1 — Design
 
-> To be filled during tech stack selection and implementation planning.
-
 ## High-Level Architecture
 
-TBD — pending tech stack decision.
+See `docs/architecture/system-design.md` for full details.
+
+```
+Next.js (TypeScript) ←── HTTP ──→ FastAPI (Python)
+        │                                │
+        └────────── PostgreSQL ──────────┘
+```
 
 ## Data Model (draft)
 
