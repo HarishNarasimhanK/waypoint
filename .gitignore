@@ -32,5 +32,15 @@ yarn-error.log*
 # Testing
 coverage/
 
+# Generated
+src/generated/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
 # Misc
 *.tsbuildinfo

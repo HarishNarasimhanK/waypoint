@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  resumes   Resume[]
+  analyses  ResumeAnalysis[]
+}
+
+model Job {
+  id              String      @id @default(cuid())
+  title           String
+  company         String
+  location        String
+  jobType         String      // full-time, intern, contract
+  description     String
+  qualifications  String?
+  salary          String?
+  sourcePlatform  String      // linkedin, greenhouse, lever
+  sourceUrl       String      @unique
+  postedAt        DateTime?
+  scrapedAt       DateTime    @default(now())
+  status          JobStatus   @default(NEW)
+  relevanceScore  Float?
+  embedding       Float[]     // pgvector stored as float array
+
+  analyses ResumeAnalysis[]
+
+  @@index([company])
+  @@index([status])
+  @@index([scrapedAt])
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  fileName  String
+  content   String   // extracted text
+  embedding Float[]  // resume embedding for matching
+  createdAt DateTime @default(now())
+
+  user     User             @relation(fields: [userId], references: [id])
+  analyses ResumeAnalysis[]
+}
+
+model ResumeAnalysis {
+  id              String   @id @default(cuid())
+  userId          String
+  jobId           String
+  resumeId        String
+  matchScore      Float
+  missingKeywords String[] // keywords in JD but not in resume
+  suggestions     Json     // { reword: [...], add: [...], strengths: [...] }
+  aiProvider      String   // ollama, claude, openai
+  createdAt       DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  job    Job    @relation(fields: [jobId], references: [id])
+  resume Resume @relation(fields: [resumeId], references: [id])
+
+  @@index([userId, jobId])
+}
+
+enum JobStatus {
+  NEW
+  VIEWED
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
+}

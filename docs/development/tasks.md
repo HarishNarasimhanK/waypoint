@@ -6,8 +6,8 @@
 - [x] Define user flow and requirements
 - [x] Set up project repository with docs structure
 - [x] Decide tech stack (ADR-003: Next.js + Python workers + PostgreSQL)
-- [ ] Scaffold project (monorepo or single app)
-- [ ] Set up database schema
+- [x] Scaffold project (monorepo: apps/web + apps/worker)
+- [x] Set up database schema (Prisma)
 - [ ] Implement job scraper (first adapter)
 - [ ] Build Job Radar feed UI
 - [ ] Build Job Detail page
