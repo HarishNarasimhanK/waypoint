@@ -8,18 +8,23 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  email          String    @unique
-  name           String
-  hashedPassword String?
-  emailVerified  DateTime?
-  image          String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String
+  hashedPassword  String?
+  emailVerified   DateTime?
+  image           String?
+  onboarded       Boolean   @default(false)
+  interestedRoles String[]
+  resumeText      String?
+  resumeFileName  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
-  accounts Account[]
-  resumes  Resume[]
-  analyses ResumeAnalysis[]
+  accounts  Account[]
+  resumes   Resume[]
+  analyses  ResumeAnalysis[]
+  savedJobs SavedJob[]
 }
 
 model Account {
@@ -81,11 +86,28 @@ model Job {
   relevanceScore  Float?
   embedding       Float[]
 
-  analyses ResumeAnalysis[]
+  analyses  ResumeAnalysis[]
+  savedJobs SavedJob[]
 
   @@index([company])
   @@index([status])
   @@index([scrapedAt])
+}
+
+model SavedJob {
+  id        String         @id @default(cuid())
+  userId    String
+  jobId     String
+  status    SavedJobStatus @default(SAVED)
+  notes     String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job  Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([userId, status])
 }
 
 model Resume {
@@ -121,6 +143,14 @@ model ResumeAnalysis {
 enum JobStatus {
   NEW
   VIEWED
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
+}
+
+enum SavedJobStatus {
+  SAVED
   APPLIED
   INTERVIEWING
   OFFER

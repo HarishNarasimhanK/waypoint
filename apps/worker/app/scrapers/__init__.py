@@ -2,8 +2,6 @@ from app.core.interfaces import ScraperAdapter
 
 
 class ScraperFactory:
-    """Factory pattern — create scrapers from config."""
-
     _registry: dict[str, type[ScraperAdapter]] = {}
 
     @classmethod
@@ -19,3 +17,9 @@ class ScraperFactory:
     @classmethod
     def available(cls) -> list[str]:
         return list(cls._registry.keys())
+
+
+# Import scrapers to trigger registration
+import app.scrapers.linkedin  # noqa: E402, F401
+import app.scrapers.remoteok  # noqa: E402, F401
+import app.scrapers.arbeitnow  # noqa: E402, F401

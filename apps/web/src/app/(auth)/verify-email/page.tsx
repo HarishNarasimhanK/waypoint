@@ -12,9 +12,9 @@ export default async function VerifyEmailPage({
   if (!token) {
     return (
       <div className="text-center space-y-4">
-        <h1 className="text-2xl font-bold text-[var(--foreground)]">Invalid link</h1>
-        <p className="text-sm text-[var(--foreground)]/60">No verification token provided.</p>
-        <Link href="/login" className="text-[#05AEFC] text-sm font-medium hover:underline">
+        <h1 className="text-2xl font-bold">Invalid link</h1>
+        <p className="text-sm text-zinc-500">No verification token provided.</p>
+        <Link href="/login" className="text-blue-600 text-sm font-medium hover:underline">
           Back to login
         </Link>
       </div>
@@ -33,9 +33,9 @@ export default async function VerifyEmailPage({
   if (!storedToken) {
     return (
       <div className="text-center space-y-4">
-        <h1 className="text-2xl font-bold text-[var(--foreground)]">Link expired</h1>
-        <p className="text-sm text-[var(--foreground)]/60">This verification link is invalid or has expired.</p>
-        <Link href="/signup" className="text-[#05AEFC] text-sm font-medium hover:underline">
+        <h1 className="text-2xl font-bold">Link expired</h1>
+        <p className="text-sm text-zinc-500">This verification link is invalid or has expired.</p>
+        <Link href="/signup" className="text-blue-600 text-sm font-medium hover:underline">
           Sign up again
         </Link>
       </div>
@@ -53,16 +53,16 @@ export default async function VerifyEmailPage({
 
   return (
     <div className="text-center space-y-4">
-      <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-b from-[#10b981]/20 to-[#10b981]/5 flex items-center justify-center">
-        <svg className="w-7 h-7 text-[#10b981]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="w-12 h-12 mx-auto rounded-full bg-emerald-50 flex items-center justify-center">
+        <svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       </div>
-      <h1 className="text-2xl font-bold text-[var(--foreground)]">Email verified</h1>
-      <p className="text-sm text-[var(--foreground)]/60">Your account is ready. You can now log in.</p>
+      <h1 className="text-2xl font-bold">Email verified</h1>
+      <p className="text-sm text-zinc-500">Your account is ready. You can now log in.</p>
       <Link
         href="/login"
-        className="inline-block px-6 py-2.5 text-sm font-semibold bg-gradient-to-b from-[#1ab8fc] to-[#05AEFC] text-white rounded-xl shadow-[0_4px_14px_rgba(5,174,252,0.3)]"
+        className="inline-block px-5 py-2.5 text-sm font-semibold bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
       >
         Go to Login
       </Link>

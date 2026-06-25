@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState } from "react";
-import { motion } from "framer-motion";
 import { login, type AuthState } from "@/actions/auth";
 import Link from "next/link";
 
@@ -11,13 +10,13 @@ export function LoginForm() {
   return (
     <form action={action} className="space-y-4">
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
+        <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm font-medium">
           {state.error}
         </div>
       )}
 
-      <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium text-[var(--foreground)]">
+      <div className="space-y-1.5">
+        <label htmlFor="email" className="text-sm font-medium">
           Email
         </label>
         <input
@@ -25,17 +24,17 @@ export function LoginForm() {
           name="email"
           type="email"
           required
-          className="w-full px-4 py-3 text-[15px] rounded-xl bg-gradient-to-b from-white to-[#fdfcfa] shadow-[inset_0_1px_3px_rgba(0,0,0,0.04)] border-none outline-none focus:ring-2 focus:ring-[#05AEFC]/30"
+          className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-zinc-200 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors"
           placeholder="you@example.com"
         />
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <label htmlFor="password" className="text-sm font-medium text-[var(--foreground)]">
+          <label htmlFor="password" className="text-sm font-medium">
             Password
           </label>
-          <Link href="/forgot-password" className="text-xs text-[#05AEFC] hover:underline">
+          <Link href="/forgot-password" className="text-xs text-blue-600 hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -44,20 +43,18 @@ export function LoginForm() {
           name="password"
           type="password"
           required
-          className="w-full px-4 py-3 text-[15px] rounded-xl bg-gradient-to-b from-white to-[#fdfcfa] shadow-[inset_0_1px_3px_rgba(0,0,0,0.04)] border-none outline-none focus:ring-2 focus:ring-[#05AEFC]/30"
+          className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-zinc-200 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors"
           placeholder="Your password"
         />
       </div>
 
-      <motion.button
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
+      <button
         type="submit"
         disabled={pending}
-        className="w-full py-3 text-[15px] font-semibold bg-gradient-to-b from-[#1ab8fc] to-[#05AEFC] text-white rounded-xl shadow-[0_4px_14px_rgba(5,174,252,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] cursor-pointer disabled:opacity-50"
+        className="w-full py-2.5 text-sm font-semibold bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {pending ? "Logging in..." : "Log in"}
-      </motion.button>
+      </button>
     </form>
   );
 }
